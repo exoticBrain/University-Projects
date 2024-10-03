@@ -18,18 +18,18 @@ typedef struct {
   char last_name[20];
   char cin[20];
   int waiting_number; // Number for waiting if the car is already rented
-  int return_day;     // When the car will be available (simplified)
+  // int return_day;     // When the car will be available (simplified)
+  Date start_date; // Start date for renting
+  Date end_date;   // End date for renting
 } Person;
 
 typedef struct {
   char matricul[20];
   int model;
   char brand[20];
-  Person renters[10];        // Stores up to 10 clients
-  Date rental_dates[10];     // Start dates for each client
-  Date rental_dates_end[10]; // End dates for each client
-  int renter_count;          // Number of clients renting this car
-  int is_rented;             // 0 if not rented, 1 if rented
+  Person *renters;
+  int renter_count; // Number of clients renting this car
+  int is_rented;    // 0 if not rented, 1 if rented
 } Car;
 
 void getch();

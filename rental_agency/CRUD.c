@@ -17,9 +17,8 @@ void ajouter(Car **cars, int *n) {
       exit(1); // Exit if memory allocation fails
     }
   }
-
-  *cars[*n] = new_car(*cars, *n); // Add new car at the end
-  (*n)++;                         // Increase number of cars
+  (*cars)[*n] = new_car(*cars, *n);
+  (*n)++; // Increase number of cars
   trier_voitures(*cars, *n);
 }
 
@@ -108,7 +107,9 @@ void menu(int *choix) {
          "8-Louer une voiture\n\n"
          "9-Rendre une voiture\t\t\t"
          "10-Afficher tous les clients et leurs periodes de location\n\n"
-         "11-Quitter\n\n"
+         "11-Sauvegarder dans un fichier\t\t"
+         "12-Charger depuis un fichier\n\n"
+         "13-Quitter\n\n"
          "Votre choix --> ");
   scanf("%d", choix);
   clear_screen();
@@ -124,27 +125,31 @@ void affiche(Car *cars, int n, int numero_flag) {
 
     // If the car is rented, display rental information
     if (cars[i].renter_count > 0) {
-      printf("Actuellement louee par : Prenom: %s\nNom: %s\nCIN: %s\n",
+      printf("Actuellement louee par : \n>---------\nPrenom: %s\nNom: %s\nCIN: "
+             "%s\n",
              cars[i].renters[0].first_name, cars[i].renters[0].last_name,
              cars[i].renters[0].cin);
-      printf("Periode de location actuelle : du %d/%d/%d au %d/%d/%d\n",
-             cars[i].rental_dates[0].year, cars[i].rental_dates[0].month,
-             cars[i].rental_dates[0].day, cars[i].rental_dates_end[0].year,
-             cars[i].rental_dates_end[0].month,
-             cars[i].rental_dates_end[0].day);
+      printf(
+          "Periode de location actuelle : du %d/%d/%d au %d/%d/%d\n---------\n",
+          cars[i].renters[0].start_date.year,
+          cars[i].renters[0].start_date.month,
+          cars[i].renters[0].start_date.day, cars[i].renters[0].end_date.year,
+          cars[i].renters[0].end_date.month, cars[i].renters[0].end_date.day);
 
       // If there are more renters in the waiting list, show them
       if (cars[i].renter_count > 1) {
         printf("Prochains locataires en attente :\n");
         for (int j = 1; j < cars[i].renter_count; j++) {
-          printf("Client %d: Prenom: %s\nNom: %s\nCIN: %s\n", j + 1,
-                 cars[i].renters[j].first_name, cars[i].renters[j].last_name,
-                 cars[i].renters[j].cin);
-          printf("Periode de location : du %d/%d/%d au %d/%d/%d\n",
-                 cars[i].rental_dates[j].year, cars[i].rental_dates[j].month,
-                 cars[i].rental_dates[j].day, cars[i].rental_dates_end[j].year,
-                 cars[i].rental_dates_end[j].month,
-                 cars[i].rental_dates_end[j].day);
+          printf("Client %d: \n>---------\nPrenom: %s\nNom: %s\nCIN: %s\n",
+                 j + 1, cars[i].renters[j].first_name,
+                 cars[i].renters[j].last_name, cars[i].renters[j].cin);
+          printf("Periode de location : du %d/%d/%d au %d/%d/%d\n---------\n",
+                 cars[i].renters[j].start_date.year,
+                 cars[i].renters[j].start_date.month,
+                 cars[i].renters[j].start_date.day,
+                 cars[i].renters[j].end_date.year,
+                 cars[i].renters[j].end_date.month,
+                 cars[i].renters[j].end_date.day);
         }
       }
     } else {
@@ -165,11 +170,12 @@ void affiche_tous_les_clients(Car *cars, int n) {
         printf("Locataire %d: %s %s (CIN: %s)\n", j + 1,
                cars[i].renters[j].first_name, cars[i].renters[j].last_name,
                cars[i].renters[j].cin);
-        printf("Periode de location: du %d/%d/%d au %d/%d/%d\n",
-               cars[i].rental_dates[j].year, cars[i].rental_dates[j].month,
-               cars[i].rental_dates[j].day, cars[i].rental_dates_end[j].year,
-               cars[i].rental_dates_end[j].month,
-               cars[i].rental_dates_end[j].day);
+        printf(
+            "Periode de location: du %d/%d/%d au %d/%d/%d\n",
+            cars[i].renters[j].start_date.year,
+            cars[i].renters[j].start_date.month,
+            cars[i].renters[j].start_date.day, cars[i].renters[j].end_date.year,
+            cars[i].renters[j].end_date.month, cars[i].renters[j].end_date.day);
       }
       found_clients = 1;
     }
@@ -180,4 +186,91 @@ void affiche_tous_les_clients(Car *cars, int n) {
   }
 
   getch(); // Wait for user input
+}
+
+void save_to_file(Car *cars, int n, const char *filename) {
+  FILE *file = fopen(filename, "w");
+  if (file == NULL) {
+    printf("Erreur: Impossible d'ouvrir le fichier pour la sauvegarde.\n");
+    return;
+  }
+
+  // Save the number of cars
+  fprintf(file, "%d\n", n);
+
+  // Save each car's information
+  for (int i = 0; i < n; i++) {
+    fprintf(file, "%s %s %d %d\n", cars[i].matricul, cars[i].brand,
+            cars[i].model, cars[i].renter_count);
+
+    // Save rental information if the car is rented
+    for (int j = 0; j < cars[i].renter_count; j++) {
+      fprintf(
+          file, "%s %s %s %d/%d/%d %d/%d/%d\n", cars[i].renters[j].first_name,
+          cars[i].renters[j].last_name, cars[i].renters[j].cin,
+          cars[i].renters[j].start_date.year,
+          cars[i].renters[j].start_date.month,
+          cars[i].renters[j].start_date.day, cars[i].renters[j].end_date.year,
+          cars[i].renters[j].end_date.month, cars[i].renters[j].end_date.day);
+    }
+  }
+
+  fclose(file);
+  printf("Données sauvegardées avec succès dans le fichier %s.\n", filename);
+  getch();
+}
+
+void load_from_file(Car **cars, int *n, const char *filename) {
+  FILE *file = fopen(filename, "r");
+  if (file == NULL) {
+    printf("Erreur: Impossible d'ouvrir le fichier pour le chargement.\n");
+    return;
+  }
+
+  // Free previously allocated memory if necessary
+  if (*cars != NULL) {
+    free(*cars);
+  }
+
+  // Load the number of cars
+  fscanf(file, "%d", n);
+
+  // Allocate memory for the cars
+  *cars = (Car *)malloc(sizeof(Car) * (*n));
+  if (*cars == NULL) {
+    printf("Erreur lors de l'allocation de mémoire pour les voitures.\n");
+    fclose(file);
+    return;
+  }
+
+  // Load each car's information
+  for (int i = 0; i < *n; i++) {
+    fscanf(file, "%s %s %d %d", (*cars)[i].matricul, (*cars)[i].brand,
+           &(*cars)[i].model, &(*cars)[i].renter_count);
+
+    // Allocate memory for the renters
+    (*cars)[i].renters =
+        (Person *)malloc(sizeof(Person) * (*cars)[i].renter_count);
+    if ((*cars)[i].renters == NULL) {
+      printf("Erreur lors de l'allocation de mémoire pour les locataires.\n");
+      fclose(file);
+      return;
+    }
+
+    // Load the renters and their rental periods
+    for (int j = 0; j < (*cars)[i].renter_count; j++) {
+      fscanf(file, "%s %s %s %d/%d/%d %d/%d/%d",
+             (*cars)[i].renters[j].first_name, (*cars)[i].renters[j].last_name,
+             (*cars)[i].renters[j].cin, &(*cars)[i].renters[j].start_date.year,
+             &(*cars)[i].renters[j].start_date.month,
+             &(*cars)[i].renters[j].start_date.day,
+             &(*cars)[i].renters[j].end_date.year,
+             &(*cars)[i].renters[j].end_date.month,
+             &(*cars)[i].renters[j].end_date.day);
+    }
+  }
+
+  fclose(file);
+  printf("Données chargées avec succès depuis le fichier %s.\n", filename);
+  getch();
 }

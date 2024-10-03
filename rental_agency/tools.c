@@ -1,4 +1,5 @@
 // Copyright [2024] <exotic>
+#include "CRUD.h"
 #include "rent_system.h"
 #include <ctype.h>
 
@@ -50,9 +51,7 @@ void free_memory(Car *cars, int n) {
   for (int i = 0; i < n; i++) {
     // If there are renters for this car, free their memory
     if (cars[i].renter_count > 0) {
-      free(cars[i].renters);      // Free the memory allocated for renters
-      free(cars[i].rental_dates); // Free the memory allocated for start dates
-      free(cars[i].rental_dates_end); // Free the memory allocated for end dates
+      free(cars[i].renters); // Free the memory allocated for renters
     }
   }
 
@@ -96,22 +95,7 @@ Car new_car(Car *cars, int n) {
   new_car.model = atoi(choix);
   new_car.is_rented = 0;
   new_car.renter_count = 0;
+  new_car.renters = NULL;
 
   return new_car;
-}
-
-int compare_dates(Date d1, Date d2) {
-  if (d1.year != d2.year)
-    return d1.year - d2.year;
-  if (d1.month != d2.month)
-    return d1.month - d2.month;
-  return d1.day - d2.day;
-}
-
-int check_date_overlap(Date start1, Date end1, Date start2, Date end2) {
-  // Return true if date ranges overlap
-  if (compare_dates(start1, end2) > 0 || compare_dates(start2, end1) > 0) {
-    return 0; // No overlap
-  }
-  return 1; // Overlapping
 }

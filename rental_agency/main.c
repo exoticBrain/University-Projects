@@ -1,5 +1,6 @@
 // Copyright [2024] <exotic>
 #include "CRUD.h"
+#include "rent_system.h"
 
 int main() {
   int menu_choice, number_of_cars;
@@ -106,15 +107,22 @@ int main() {
       break;
     }
     case 11:
+      save_to_file(cars, number_of_cars, "data.txt");
+      break;
+
+    case 12:
+      load_from_file(&cars, &number_of_cars, "data.txt");
+      break;
+    case 13:
       printf("Goodbye\n");
       break;
     default:
       clear_screen();
-      printf("Votre choix est incorrect\nEntrer un nombre de 1-11\n");
+      printf("Votre choix est incorrect\nEntrer un nombre de 1-13\n");
       getch();
       break;
     }
-  } while (menu_choice != 11);
+  } while (menu_choice != 13);
   // Free dynamically allocated memory before exiting
   if (cars != NULL) {
     free_memory(cars, number_of_cars);
