@@ -32,23 +32,15 @@ typedef struct {
   int is_rented;             // 0 if not rented, 1 if rented
 } Car;
 
-typedef struct {
-  Car *garage;
-  int ncars;
-} Garage;
-
 void getch();
-void menu();
+void clear_screen();
+void trier_voitures(Car *cars, int n);
+Car new_car(Car *cars, int n);
+void get_number_of_cars(int *);
 int rechercher_voiture(Car *cars, int n, const char *matricul);
 void trier_voitures(Car *cars, int n);
-void remplir(Car *cars, int n);
-Car *ajouter(Car *cars, int *n);
-void modifier_voiture(Car *cars, int n);
-void louer_voiture(Car *cars, int n);
-void rendre_voiture(Car *cars, int n);
-int supprimer_voiture(Car *cars, int n);
-void affiche(Car *car, int n, int number_flag);
-void affiche_tous_les_clients(Car *cars, int n);
+int compare_dates(Date d1, Date d2);
+int check_date_overlap(Date start1, Date end1, Date start2, Date end2);
 void free_memory(Car *cars, int n);
 
 #endif // !RENT_SYSTEM_H

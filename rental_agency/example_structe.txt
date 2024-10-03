@@ -1,0 +1,19 @@
+University-Projects/
+│
+├── rental_agency/               # Directory for the car rental agency project
+│   ├── main.c                    # Main program file; contains the entry point and menu logic
+│   ├── rent_system.c             # Core functionalities for managing rentals and cars
+│   ├── renting_the_car.c         # Functions for renting and returning cars
+│   ├── displays.c                # Functions for displaying car and rental information
+│   ├── memory_management.c        # Functions for managing dynamic memory allocation
+│   ├── date.h                    # Header file defining the Date structure
+│   ├── car.h                     # Header file defining the Car structure and related functions
+│   ├── Makefile                  # Makefile for building the project (optional)
+│   ├── build.sh                  # Script to compile the project
+│   ├── README.md                 # Documentation for the rental agency project
+│   └── tests/                    # Directory for test files and test cases
+│       ├── test_rent_system.c    # Unit tests for rent_system.c
+│       ├── test_renting_the_car.c# Unit tests for renting_the_car.c
+│       └── test_displays.c       # Unit tests for displays.c
+│
+└── other_projects/               # Directory for other university projects (if any)

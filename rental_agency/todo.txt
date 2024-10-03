@@ -1,0 +1,3 @@
+Fix the problem iside ajouter
+ [ ] *cars[*n] = new_car(*cars, *n); // Add new car at the end
+    - it's not working there is a problem that gives me a seg fault

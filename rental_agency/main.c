@@ -1,52 +1,30 @@
 // Copyright [2024] <exotic>
-#include "rent_system.h"
+#include "CRUD.h"
 
 int main() {
-  int choix, n;
-  Car *cars = NULL;
+  int menu_choice, number_of_cars;
+  Car *cars;
 
-  system("clear");
-  printf("Donner le nombre de voitures dans le garage: ");
-  scanf("%d", &n);
-  system("clear");
-
-  cars = malloc(sizeof(Car) * n);
-
-  int remplir_first;
-  if (n) {
-    printf("Voulez-vous remplir les voitures deja existantes dans le garage\n");
-    do {
-      printf("\n1-Yes\n2-No\n--> ");
-      scanf("%d", &remplir_first);
-    } while (remplir_first < 1 || remplir_first > 2);
-
-    if (remplir_first == 1) {
-      remplir(cars, n);
-    }
-  }
-
+  cars = NULL;
+  menu_choice = 0;
+  number_of_cars = 0;
   do {
-    system("clear");
-    menu();
-    scanf("%d", &choix);
-    system("clear");
+    menu(&menu_choice);
 
-    switch (choix) {
+    switch (menu_choice) {
     case 1:
-      cars = ajouter(cars, &n);
-      break;
-
+      ajouter(&cars, &number_of_cars);
       break;
     case 2:
-      if (*cars->brand)
-        affiche(cars, n, 1);
+      if (cars)
+        affiche(cars, number_of_cars, 1);
       else
         printf("No Car in the Garage\n");
       getch();
       break;
     case 3: {
-      if (*cars->brand)
-        modifier_voiture(cars, n);
+      if (cars)
+        modifier_voiture(cars, number_of_cars);
       else
         printf("No Car in the Garage\n");
       getch();
@@ -54,7 +32,7 @@ int main() {
     }
 
     case 4: {
-      if (!*cars->brand) {
+      if (!cars) {
         printf("No Car in the Garage\n");
         getch();
         break;
@@ -63,7 +41,7 @@ int main() {
       printf("Veuillez saisir le numero d'immatriculation du Vehicule: ");
       scanf("%s", matricul);
 
-      int car_index = rechercher_voiture(cars, n, matricul);
+      int car_index = rechercher_voiture(cars, number_of_cars, matricul);
       if (car_index != -1) {
         printf("Voiture trouvee :\n");
         printf("Marque: %s\n", cars[car_index].brand);
@@ -76,25 +54,25 @@ int main() {
       break;
     }
     case 5: {
-      if (!*cars->brand) {
+      if (!cars) {
         printf("No Car in the Garage\n");
         getch();
         break;
       }
-      n = supprimer_voiture(cars, n);
+      supprimer_voiture(&cars, &number_of_cars);
       getch();
       break;
     }
 
     case 6: {
-      if (!*cars->brand) {
+      if (!cars) {
         printf("No Car in the Garage\n");
         getch();
         break;
       }
       int count = 0;
       int current_year = 2024; // Use the actual current year
-      for (int i = 0; i < n; i++) {
+      for (int i = 0; i < number_of_cars; i++) {
         if (current_year - cars[i].model > 5) {
           affiche(&cars[i], 1, 0);
           count++;
@@ -105,36 +83,41 @@ int main() {
       break;
     }
     case 7:
-      remplir(cars, n);
+      // remplir(cars, number_of_cars);
+      printf("Not implemented yet!\n");
       getch();
+      break;
     case 8:
-      if (!*cars->brand) {
+      if (!cars) {
         printf("No Car in the Garage\n");
         getch();
         break;
       }
-      louer_voiture(cars, n);
+      affiche(cars, number_of_cars, 1);
+      louer_voiture(cars, number_of_cars);
       getch();
       break;
     case 9:
-      rendre_voiture(cars, n);
+      rendre_voiture(cars, number_of_cars);
       getch();
       break;
     case 10: {
-      affiche_tous_les_clients(cars, n);
+      affiche_tous_les_clients(cars, number_of_cars);
       break;
     }
-
     case 11:
       printf("Goodbye\n");
       break;
     default:
+      clear_screen();
+      printf("Votre choix est incorrect\nEntrer un nombre de 1-11\n");
+      getch();
       break;
     }
-  } while (choix != 11);
+  } while (menu_choice != 11);
   // Free dynamically allocated memory before exiting
   if (cars != NULL) {
-    free_memory(cars, n);
+    free_memory(cars, number_of_cars);
   }
   return 0;
 }

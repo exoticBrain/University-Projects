@@ -1,3 +1,3 @@
 #!/bin/sh
 
-gcc -o build/main main.c rent_system.c renting_the_car.c displays.c -Wall -Wextra -Werror
+gcc -o build/main main.c  rent_management.c CRUD.c tools.c -Wall -Wextra -Werror
