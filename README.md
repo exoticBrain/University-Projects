@@ -1,6 +1,7 @@
 # 📚 University Projects Repository
 
-Welcome to my repository of university projects! This repository contains various programming projects completed during my studies.
+Welcome to my repository of university projects! This repository is just for fun!!
+It contains various programming projects completed during my studies.
 
 ## 📑 Table of Contents
 1. 🚗 [Rental Agency](./rental_agency)
