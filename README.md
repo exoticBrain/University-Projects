@@ -5,6 +5,7 @@ It contains various programming projects completed during my studies.
 
 ## 📑 Table of Contents
 1. 🚗 [Rental Agency](./rental_agency)
+1. M [Matrice creuse](./matrice_creuse)
 2. 🛠️ [Other Projects](#)
 
 ## 🛠️ Project Overview
