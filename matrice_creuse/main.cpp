@@ -1,28 +1,7 @@
-#include <cstring>
-#include <fstream>
-#include <iostream>
-#include <string>
-
-using namespace std;
+#include "datatypes.h"
 
 int main() {
-  // get the filepath
-  string filePath = "fichier_F.txt";
-
-  // Open the file using ifstream
-  ifstream file(filePath);
-
-  // confirm file opening
-  if (!file.is_open()) {
-    // print error message and return
-    cerr << "Failed to open file: " << filePath << endl;
-
-    return 1;
-  }
-
-  string line;
-  getline(file, line);
-
+  std::string line = file_manipulation();
   char *matrix = strtok((char *)line.c_str(), " ");
 
   int line_number = atoi(matrix);
@@ -33,14 +12,11 @@ int main() {
   // take subsequent tokens
   matrix = strtok(NULL, " ");
 
-  cout << "line : " << line_number << endl;
-  cout << "colonne : " << colonne_number << endl;
+  std::cout << "line : " << line_number << std::endl;
+  std::cout << "colonne : " << colonne_number << std::endl;
   while (matrix) {
 
     // take subsequent tokens
     matrix = strtok(NULL, " ");
   }
-
-  // Close the file
-  file.close();
 }
