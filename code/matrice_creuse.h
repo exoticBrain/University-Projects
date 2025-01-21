@@ -23,4 +23,7 @@ void Init_Mat(PMat &M);
 void Creer_Mat(PMat &M, std::string Name);
 void Afficher_Mat(PMat M);
 void Liberer_Mat(PMat &M);
-void Somme(PMat M1, PMat M2, PMat &M3);
+void SommeMat(PMat M1, PMat M2, PMat &M3);
+void Produit(PMat M1, PMat M2, PMat &M4);
+void Puissance(PMat M, int K, PMat &Res);
+void Sigma_Puissance(PMat M, int n, PMat &S);
