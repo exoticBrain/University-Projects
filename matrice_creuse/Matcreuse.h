@@ -24,7 +24,17 @@ struct TMat {
 
 typedef struct TMat *PMat;
 
-std::string file_manipulation();
+
+class Matcreuse {
+    public:
+        Matcreuse();
+        Matcreuse(int nbL, int nbC);
+        ~Matcreuse();
+    std::string file_manipulation();
+    private:
+    TVect Mat;
+    int Nb_L, Nb_C;
+};
 
 #endif // !DATATYPES_H_
 

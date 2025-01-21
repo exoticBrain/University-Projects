@@ -2,7 +2,7 @@
 
 int main() {
 
-    PMat M1, M2, M3, M4, S, Res;
+  PMat M1, M2, M3, M4, S, Res;
   std::string line = file_manipulation();
 
   // --- Splitting the numbers into tokens of chars
@@ -17,6 +17,7 @@ int main() {
 
   std::cout << "line : " << line_number << std::endl;
   std::cout << "colonne : " << column_number << std::endl;
+  PCellule test = new Cellule;
   while (matrix) {
     for (int i = 0; i < line_number; i++) {
       for (int j = 0; j < column_number; j++) {
