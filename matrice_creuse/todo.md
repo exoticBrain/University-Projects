@@ -1,3 +1,0 @@
-- Implemet creerMat
-- I have done 2 nested loops for lines and columns
-    - Create the Matrix as a linked list with suiv_L, and suiv_C
